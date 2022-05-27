@@ -76,4 +76,36 @@ router.post('/', async (req, res) => {
     }  
 })
 
+router.put('/carservice', async (req, res) => {
+    try {
+        await Car.update(
+            { 
+                status: "In Service" 
+            },
+            {
+                where: {
+                    [Op.or]: [
+                        {
+                            production_date:{
+                                [Op.lt]: '2017-01-01'
+                            }
+                        },
+                        {
+                            mileage:{
+                                [Op.gt]: 100000
+                            }
+                        }
+                    ]
+                }
+            }
+        )
+
+        res.status(200).send({
+            message: 'Car successfully updated to the database'
+        })   
+    } catch (error) {
+        console.log(error)
+    }  
+})
+
 module.exports = router
