@@ -1,5 +1,7 @@
 const express = require("express"); 
-const db = require('../models')
+const db = require('../models');
+const Driver = db.Driver
+const Run = db.Run 
 const Car = db.Car
 const Op = db.Sequelize.Op;
 
@@ -21,6 +23,53 @@ router.get('/lowfuel', async (req, res) => {
         res.status(200).send({
             message: 'Cars successfully got from the database',
             cars: cars
+        })   
+    } catch (error) {
+        console.log(error)
+    }  
+})
+
+router.get('/unauthorized', async (req, res) => {
+    try {
+        const cars = await Car.findAll({ 
+            include: [
+                {
+                    model: Run,
+                    include:[
+                        {
+                            model: Driver,
+                            where: {
+                                credit_card_id: {
+                                    [Op.not]: null
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            where: {
+                status: "Reserved",
+            }
+        })
+        res.status(200).send({
+            message: 'Cars successfully got from the database',
+            cars: cars
+        })   
+    } catch (error) {
+        console.log(error)
+    }  
+})
+
+router.post('/', async (req, res) => {
+    try {
+        const newCarData = req.body.newCar
+        console.log(newCarData)
+
+        const car = await Car.create({...newCarData})
+
+        res.status(200).send({
+            message: 'Car successfully added to the database',
+            car
         })   
     } catch (error) {
         console.log(error)

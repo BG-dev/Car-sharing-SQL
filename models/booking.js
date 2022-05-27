@@ -1,5 +1,15 @@
+const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
-    const Booking = sequelize.define('Booking', {
+  class Booking extends Model{
+    static associate({Run, Car}) {
+      Booking.belongsTo(Car, { foreignKey: 'vin' })
+      Booking.belongsTo(Run, { foreignKey: 'run_id' })
+    }
+  }
+
+  Booking.init(
+    {
       booking_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -30,8 +40,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       }
     },{
+      sequelize,
       tableName: "booking",
       timestamps: false
-    })
-    return Booking;
+    }
+  )
+  
+  return Booking;
   };

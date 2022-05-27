@@ -1,5 +1,14 @@
+const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
-    const Driver = sequelize.define('Driver', {
+  class Driver extends Model{
+    static associate({Run, CreditCard}) {
+      Driver.hasOne(Run, { foreignKey: 'driver_id' })
+      Driver.hasOne(CreditCard, { foreignKey: 'credit_card_id' })
+    }
+  }
+  Driver.init(
+    {
       driver_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -15,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       second_name: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
       },
       credit_card_id: {
         type: DataTypes.INTEGER,
@@ -26,8 +35,10 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },{
+      sequelize,
       tableName: "driver",
       timestamps: false
-    })
-    return Driver;
+    }
+  )
+  return Driver;
   };
