@@ -4,8 +4,8 @@ module.exports = (sequelize, DataTypes) => {
   class Run extends Model{
     static associate({ Car, Driver, Booking }) {
       Run.belongsTo(Driver, { foreignKey: 'driver_id' })
-      Run.hasOne(Car, { foreignKey: 'current_run_id' })
-      Run.hasOne(Booking, { foreignKey: 'run_id' })
+      Run.hasOne(Car, { foreignKey: 'current_run_id', onDelete: 'cascade', hooks: true })
+      Run.hasOne(Booking, { foreignKey: 'run_id', onDelete: 'cascade', hooks: true })
     }
   }
   Run.init({

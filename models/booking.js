@@ -3,8 +3,8 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model{
     static associate({Run, Car}) {
-      Booking.belongsTo(Car, { foreignKey: 'vin' })
-      Booking.belongsTo(Run, { foreignKey: 'run_id' })
+      Booking.belongsTo(Car, { foreignKey: 'vin_id'})
+      Booking.belongsTo(Run, { foreignKey: 'run_id'})
     }
   }
 
@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true
       },
-      vin: {
+      vin_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references:{
             model: 'Car',
             key: 'vin'
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       run_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references:{
             model: 'Run',
             key: 'run_id'

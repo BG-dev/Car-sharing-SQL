@@ -3,8 +3,8 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Car extends Model{
     static associate({ Run, Booking }) {
-      Car.belongsTo(Run, { foreignKey: 'current_run_id' })
-      Car.hasOne(Booking, { foreignKey: 'vin' })
+      Car.belongsTo(Run, { foreignKey: 'current_run_id'})
+      Car.hasOne(Booking, { foreignKey: 'vin_id', onDelete: 'cascade', hooks: true})
     }
   }
   Car.init(

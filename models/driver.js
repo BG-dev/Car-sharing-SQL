@@ -3,8 +3,8 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Driver extends Model{
     static associate({Run, CreditCard}) {
-      Driver.hasOne(Run, { foreignKey: 'driver_id' })
-      Driver.hasOne(CreditCard, { foreignKey: 'credit_card_id' })
+      Driver.hasOne(Run, { foreignKey: 'driver_id', onDelete: 'cascade', hooks: true })
+      Driver.hasOne(CreditCard, { foreignKey: 'credit_card_id', onDelete: 'cascade', hooks: true })
     }
   }
   Driver.init(
