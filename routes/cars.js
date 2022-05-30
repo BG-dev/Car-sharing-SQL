@@ -13,15 +13,12 @@ router.get('/lowfuel', async (req, res) => {
     try {
         const cars = await Car.findAll({ 
             where: {
-                current_run_id: {
-                    [Op.not]: null
-                },
+                status: 'In use', 
                 fuel_level: {
                     [Op.lt]: 25
                 } 
             }
         })
-        console.log(cars)
         res.status(200).send({
             message: 'Cars successfully got from the database',
             cars: cars
@@ -42,7 +39,7 @@ router.get('/unauthorized', async (req, res) => {
                             model: Driver,
                             where: {
                                 credit_card_id: {
-                                    [Op.not]: null
+                                    [Op.is]: null
                                 }
                             }
                         }
